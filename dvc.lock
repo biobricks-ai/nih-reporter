@@ -1,15 +1,6 @@
 schema: '2.0'
 stages:
-  1-stage:
-    cmd: Rscript stages/01-stage.R
-    deps:
-    - path: stages/01-stage.R
-      md5: c468dc14527e00c339f146e1dba2bd3b
-      size: 118
-    outs:
-    - path: data/mtcars.parquet
-      md5: 77cf29accf9535522fad7db1486eff9a
-      size: 6243
+
   download:
     cmd: python3 stages/01_download.py
     deps:
@@ -23,6 +14,7 @@ stages:
       md5: e205b6c0dae85fee71e0e7078c1e264b.dir
       size: 2716413850
       nfiles: 77
+
   build:
     cmd: python3 stages/02_build.py
     deps:

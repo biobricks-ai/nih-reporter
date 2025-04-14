@@ -1,8 +1,9 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromiumService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 from tqdm import tqdm
 import pandas as pd
 import time
@@ -27,7 +28,10 @@ def download_projects():
     options.add_experimental_option("prefs", prefs)
 
     # Set up the Selenium WebDriver with the modified options
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome(
+        service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
+        options=options
+    )
 
     time.sleep(5)
 
@@ -78,7 +82,10 @@ def download_abstracts():
     options.add_experimental_option("prefs", prefs)
 
     # Set up the Selenium WebDriver with the modified options
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome(
+        service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
+        options=options
+    )
 
     time.sleep(5)
 

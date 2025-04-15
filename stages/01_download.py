@@ -16,7 +16,13 @@ def setup_chrome_driver(download_dir):
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    prefs = {"download.default_directory": download_dir}
+    prefs = {
+            "download.default_directory": download_dir,
+            "download.prompt_for_download": False,
+            "download.directory_upgrade": True,
+            "safebrowsing.enabled": True,
+            'profile.default_content_setting_values.automatic_downloads': 1
+    }
     options.add_experimental_option("prefs", prefs)
 
     # Set up the Selenium WebDriver with the modified options

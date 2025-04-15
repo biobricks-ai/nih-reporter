@@ -1,13 +1,37 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromiumService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 from tqdm import tqdm
 import pandas as pd
 import time
 import os
 import re
+
+def setup_chrome_driver(download_dir):
+    # Set up Chrome options
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    prefs = {
+            "download.default_directory": download_dir,
+            "download.prompt_for_download": False,
+            "download.directory_upgrade": True,
+            "safebrowsing.enabled": True,
+            'profile.default_content_setting_values.automatic_downloads': 1
+    }
+    options.add_experimental_option("prefs", prefs)
+
+    # Set up the Selenium WebDriver with the modified options
+    driver = webdriver.Chrome(
+        service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
+        options=options
+    )
+
+    return driver
 
 # DOWNLOAD PROJECTS ============================================================
 def download_projects():
@@ -18,16 +42,8 @@ def download_projects():
     # URL of the website
     url = "https://reporter.nih.gov/exporter"
 
-    # Set up Chrome options
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    prefs = {"download.default_directory": download_dir}
-    options.add_experimental_option("prefs", prefs)
-
-    # Set up the Selenium WebDriver with the modified options
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    # Set up the Selenium WebDriver with Chrome options
+    driver = setup_chrome_driver(download_dir)
 
     time.sleep(5)
 
@@ -69,16 +85,8 @@ def download_abstracts():
     # URL of the website
     url = "https://reporter.nih.gov/exporter/abstracts"
 
-    # Set up Chrome options
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    prefs = {"download.default_directory": download_dir}
-    options.add_experimental_option("prefs", prefs)
-
-    # Set up the Selenium WebDriver with the modified options
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    # Set up the Selenium WebDriver with Chrome options
+    driver = setup_chrome_driver(download_dir)
 
     time.sleep(5)
 

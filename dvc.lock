@@ -6,26 +6,34 @@ stages:
     deps:
     - path: https://reporter.nih.gov/exporter
       hash: md5
-      checksum: '"1da2d072b942d0e:dtagent10277231024135831vLsK"'
-      size: 3596
+      checksum: '"1dba4d343cb15ec"'
+      size: 3308
+    - path: stages/01_download.py
+      hash: md5
+      md5: f59fcb58e18201cc370d5bda7fcaeca7
+      size: 3942
+      isexec: true
     outs:
     - path: download
       hash: md5
-      md5: e205b6c0dae85fee71e0e7078c1e264b.dir
-      size: 2716413850
-      nfiles: 77
-
+      md5: 75ea80143bcea07488008d4b1134669d.dir
+      size: 3010853972
+      nfiles: 81
   build:
     cmd: python3 stages/02_build.py
     deps:
     - path: download
       hash: md5
-      md5: e205b6c0dae85fee71e0e7078c1e264b.dir
-      size: 2716413850
-      nfiles: 77
+      md5: 75ea80143bcea07488008d4b1134669d.dir
+      size: 3010853972
+      nfiles: 81
+    - path: stages/02_build.py
+      hash: md5
+      md5: 1f2962931570a2bc0f802a60e771cdf8
+      size: 2425
     outs:
     - path: brick/nih_reporter.parquet
       hash: md5
-      md5: 210460682d646935dfcf0c93358bad05.dir
-      size: 4604121335
-      nfiles: 38
+      md5: 57c2b850a3e896c0710474d85e9a8382.dir
+      size: 4979201173
+      nfiles: 40

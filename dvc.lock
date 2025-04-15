@@ -10,9 +10,8 @@ stages:
       size: 3308
     - path: stages/01_download.py
       hash: md5
-      md5: f59fcb58e18201cc370d5bda7fcaeca7
-      size: 3942
-      isexec: true
+      md5: 0cc7af7d3bb5338c4c66c83114ec1cd4
+      size: 2716
     outs:
     - path: download
       hash: md5

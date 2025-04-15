@@ -76,7 +76,8 @@ def download_data(url):
 # URLs for downloads
 urls = [
     "https://reporter.nih.gov/exporter/projects",
-    "https://reporter.nih.gov/exporter/abstracts"
+    "https://reporter.nih.gov/exporter/abstracts",
+    "https://reporter.nih.gov/exporter/clinicalstudies"
 ]
 
 # Run the downloads for each URL

@@ -14,6 +14,7 @@ stages:
     cmd: python3 stages/01_download.py
     deps:
       - https://reporter.nih.gov/exporter
+      - stages/01_download.py
     outs:
       - download
       
@@ -21,5 +22,6 @@ stages:
     cmd: python3 stages/02_build.py
     deps:
       - download
+      - stages/02_build.py
     outs:
       - brick/nih_reporter.parquet

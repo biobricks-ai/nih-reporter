@@ -4,7 +4,7 @@ from tqdm import tqdm
 def safe_csv_to_pdf(zipf, csv):
     try:
         with zipf.open(csv) as f:
-            return pd.read_csv(f, encoding="ISO-8859-1", dtype=str, on_bad_lines='skip')
+            return pd.read_csv(f, encoding="UTF-8", dtype=str, on_bad_lines='skip')
     except pd.errors.ParserError as e:
         logging.warning(f"Error parsing {csv}: {e}")
         return None

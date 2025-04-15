@@ -10,15 +10,7 @@ import time
 import os
 import re
 
-# DOWNLOAD PROJECTS ============================================================
-def download_projects():
-    # make the download/projects directory if it doesn't exist
-    download_dir = os.path.join(os.getcwd(), 'download', 'projects')
-    os.makedirs(download_dir, exist_ok=True)
-
-    # URL of the website
-    url = "https://reporter.nih.gov/exporter"
-
+def setup_chrome_driver(download_dir):
     # Set up Chrome options
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
@@ -32,6 +24,20 @@ def download_projects():
         service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
         options=options
     )
+
+    return driver
+
+# DOWNLOAD PROJECTS ============================================================
+def download_projects():
+    # make the download/projects directory if it doesn't exist
+    download_dir = os.path.join(os.getcwd(), 'download', 'projects')
+    os.makedirs(download_dir, exist_ok=True)
+
+    # URL of the website
+    url = "https://reporter.nih.gov/exporter"
+
+    # Set up the Selenium WebDriver with Chrome options
+    driver = setup_chrome_driver(download_dir)
 
     time.sleep(5)
 
@@ -73,19 +79,8 @@ def download_abstracts():
     # URL of the website
     url = "https://reporter.nih.gov/exporter/abstracts"
 
-    # Set up Chrome options
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    prefs = {"download.default_directory": download_dir}
-    options.add_experimental_option("prefs", prefs)
-
-    # Set up the Selenium WebDriver with the modified options
-    driver = webdriver.Chrome(
-        service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
-        options=options
-    )
+    # Set up the Selenium WebDriver with Chrome options
+    driver = setup_chrome_driver(download_dir)
 
     time.sleep(5)
 

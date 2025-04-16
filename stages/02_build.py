@@ -1,18 +1,20 @@
 import pandas as pd, zipfile, os, logging
 from tqdm import tqdm
 
-def safe_csv_to_pdf(zipf, csv):
+def safe_csv_to_pdf(zipf, csv, encoding=None):
+    if encoding is None:
+        encoding = 'UTF-8'
     try:
         with zipf.open(csv) as f:
-            return pd.read_csv(f, encoding="UTF-8", dtype=str, on_bad_lines='skip')
+            return pd.read_csv(f, encoding=encoding, dtype=str, on_bad_lines='skip')
     except pd.errors.ParserError as e:
         logging.warning(f"Error parsing {csv}: {e}")
         return None
 
-def extract_df_from_zip(zip):
+def extract_df_from_zip(zip, encoding=None):
     with zipfile.ZipFile(zip, 'r') as zipf:
         csvs = [f for f in zipf.namelist() if f.endswith('.csv')]
-        dfs = [safe_csv_to_pdf(zipf, csv) for csv in csvs]
+        dfs = [safe_csv_to_pdf(zipf, csv, encoding=encoding) for csv in csvs]
         dfs = [df for df in dfs if df is not None]
         return pd.concat(dfs, ignore_index=True) if len(dfs) > 0 else None
 
@@ -20,14 +22,14 @@ def extract_df_from_zip(zip):
 def extract_projects():
     dir = 'download/projects'
     zips = [os.path.join(dir, f) for f in os.listdir(dir) if f.endswith('.zip')]
-    dfs = [extract_df_from_zip(zip) for zip in tqdm(zips)]
+    dfs = [extract_df_from_zip(zip, encoding='UTF-8') for zip in tqdm(zips)]
     return pd.concat(dfs, ignore_index=True)
 
 # EXTRACT ABSTRACTS ============================================================
 def extract_abstracts():
     dir = 'download/abstracts'
     zips = [os.path.join(dir, f) for f in os.listdir(dir) if f.endswith('.zip')]
-    dfs = [extract_df_from_zip(zip) for zip in tqdm(zips)]
+    dfs = [extract_df_from_zip(zip, encoding='ISO-8859-1') for zip in tqdm(zips)]
     return pd.concat(dfs, ignore_index=True)
 
 # PUT IT ALL TOGETHER ============================================================

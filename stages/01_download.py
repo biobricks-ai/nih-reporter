@@ -63,8 +63,8 @@ def download_data(url):
         cols = row.find_elements(By.TAG_NAME, 'td')
         if cols:
             data.append([col.text for col in cols])
-            # Find the download link in the third column
-            download_links.append(cols[2].find_element(By.TAG_NAME, 'a'))
+            # Find the first download link in any column
+            download_links.append(row.find_elements(By.XPATH, './/td/a')[0])
 
     for link in tqdm(download_links, desc=f'Downloading {download_type}'):
         driver.execute_script("arguments[0].click();", link)

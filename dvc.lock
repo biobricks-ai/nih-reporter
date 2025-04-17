@@ -36,3 +36,22 @@ stages:
       md5: 4bb3fe1140ee684b03b0c52d6865e2fa.dir
       size: 4978183800
       nfiles: 40
+  build_exporter:
+    cmd: stages/03_exporter_build.sh
+    deps:
+    - path: download
+      hash: md5
+      md5: e430ebe8fa91c2dc8aa737111b091f46.dir
+      size: 3015421606
+      nfiles: 82
+    - path: stages/03_exporter_build.sh
+      hash: md5
+      md5: db30ad5bc3b411548c39bbed4d2fd37f
+      size: 3300
+      isexec: true
+    outs:
+    - path: brick/ExPORTER
+      hash: md5
+      md5: 3e324353335fc2a557d5ceb09cd12f7f.dir
+      size: 4563745313
+      nfiles: 96

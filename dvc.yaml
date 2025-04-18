@@ -18,10 +18,18 @@ stages:
     outs:
       - download
       
-  build: 
+  build:
     cmd: python3 stages/02_build.py
     deps:
       - download
       - stages/02_build.py
     outs:
       - brick/nih_reporter.parquet
+
+  build_exporter:
+    cmd: stages/03_exporter_build.sh
+    deps:
+      - download
+      - stages/03_exporter_build.sh
+    outs:
+      - brick/ExPORTER

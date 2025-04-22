@@ -56,6 +56,8 @@ process_by_group_prefix projects/RePORTER_PRJ_C
 
 mkdir -p "$brickdir_exporter/projects"
 duckdb -c "$(myenvsubst <<'SQL'
+SET threads = 1;
+
 COPY (
 	SELECT
 		*
@@ -90,6 +92,8 @@ process_by_group_prefix projects/RePORTER_PRJFUNDING_C
 
 mkdir -p "$brickdir_exporter/projects"
 duckdb -c "$(myenvsubst <<'SQL'
+SET threads = 1;
+
 COPY (
 	SELECT
 		*
@@ -118,6 +122,8 @@ find ${rawdir}/abstracts/RePORTER_PRJABS_C/ -type f -name '*.csv' | sort | paral
 
 mkdir -p "$brickdir_exporter/abstracts"
 duckdb -c "$(myenvsubst <<'SQL'
+SET threads = 1;
+
 COPY (
 	SELECT
 		*
@@ -140,6 +146,8 @@ SQL
 # read the single file directly
 mkdir -p "$brickdir_exporter/clinicalstudies"
 duckdb -c "$(myenvsubst <<'SQL'
+SET threads = 1;
+
 COPY (
 	SELECT
 		*

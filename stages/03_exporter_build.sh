@@ -59,6 +59,19 @@ duckdb -c "$(myenvsubst <<'SQL'
 COPY (
 	SELECT
 		*
+		REPLACE(
+			TOTAL_COST::INT64               AS TOTAL_COST,
+			TOTAL_COST_SUB_PROJECT::INT64   AS TOTAL_COST_SUB_PROJECT,
+
+			-- NOTE: The `AWARD_NOTICE_DATE` column contains the
+			-- time part "T00:00:00" in some files and no time part
+			-- in other files so this does not have a uniform
+			-- representation across all files. But it is supposed
+			-- to be a DATE.
+			AWARD_NOTICE_DATE::DATE         AS AWARD_NOTICE_DATE,
+
+			ARRA_FUNDED = 'Y'               AS ARRA_FUNDED
+		)
 	FROM read_csv(
 		'${rawdir}/projects/RePORTER_PRJ_C/*.csv',
 		encoding = 'utf-8',

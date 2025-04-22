@@ -30,7 +30,7 @@
             buildInputs = [
               (python3.withPackages (ps: with ps; [ selenium webdriver-manager tqdm pandas pyarrow ]))
               (with pkgs; [ chromium chromedriver ])
-              (with pkgs-2411; [ recode parallel coreutils ])
+              (with pkgs-2411; [ recode parallel coreutils gettext ])
               # Use duckdb from dev-shell
               dev-shell.packages.${system}.duckdb
             ];

@@ -47,23 +47,27 @@ function process_by_group_prefix_with_fy() {
 	'
 }
 
+function myenvsubst() {
+	envsubst '$rawdir,$brickdir_exporter'
+}
+
 # ExPORTER/projects/RePORTER_PRJ_C {{{
 process_by_group_prefix projects/RePORTER_PRJ_C
 
 mkdir -p "$brickdir_exporter/projects"
-duckdb -c "$(cat <<'SQL'
+duckdb -c "$(myenvsubst <<'SQL'
 COPY (
 	SELECT
 		*
 	FROM read_csv(
-		'raw/projects/RePORTER_PRJ_C/*.csv',
+		'${rawdir}/projects/RePORTER_PRJ_C/*.csv',
 		encoding = 'utf-8',
 		header = true,
 		quote = '"',
 		escape = '"',
 		union_by_name = true
 	)
-) TO 'brick/ExPORTER/projects/RePORTER_PRJ_C.parquet' (FORMAT parquet, PARTITION_BY (FY));
+) TO '${brickdir_exporter}/projects/RePORTER_PRJ_C.parquet' (FORMAT parquet, PARTITION_BY (FY));
 SQL
 )"
 # }}}
@@ -72,19 +76,19 @@ SQL
 process_by_group_prefix projects/RePORTER_PRJFUNDING_C
 
 mkdir -p "$brickdir_exporter/projects"
-duckdb -c "$(cat <<'SQL'
+duckdb -c "$(myenvsubst <<'SQL'
 COPY (
 	SELECT
 		*
 	FROM read_csv(
-		'raw/projects/RePORTER_PRJFUNDING_C/*.csv',
+		'${rawdir}/projects/RePORTER_PRJFUNDING_C/*.csv',
 		encoding = 'utf-8',
 		header = true,
 		quote = '"',
 		escape = '"',
 		union_by_name = true
 	)
-) TO 'brick/ExPORTER/projects/RePORTER_PRJFUNDING_C.parquet' (FORMAT parquet, PARTITION_BY (FY));
+) TO '${brickdir_exporter}/projects/RePORTER_PRJFUNDING_C.parquet' (FORMAT parquet, PARTITION_BY (FY));
 SQL
 )"
 # }}}
@@ -100,12 +104,12 @@ find ${rawdir}/abstracts/RePORTER_PRJABS_C/ -type f -name '*.csv' | sort | paral
 '
 
 mkdir -p "$brickdir_exporter/abstracts"
-duckdb -c "$(cat <<'SQL'
+duckdb -c "$(myenvsubst <<'SQL'
 COPY (
 	SELECT
 		*
 	FROM read_csv(
-		'raw/abstracts/RePORTER_PRJABS_C/**/*.csv',
+		'${rawdir}/abstracts/RePORTER_PRJABS_C/**/*.csv',
 		header = true,
 		strict_mode = false,
 		quote = '"',
@@ -113,7 +117,7 @@ COPY (
 		union_by_name = true,
 		hive_partitioning = true
 	)
-) TO 'brick/ExPORTER/abstracts/RePORTER_PRJABS_C.parquet' (FORMAT parquet, PARTITION_BY (FY));
+) TO '${brickdir_exporter}/abstracts/RePORTER_PRJABS_C.parquet' (FORMAT parquet, PARTITION_BY (FY));
 SQL
 )"
 # }}}
@@ -122,7 +126,7 @@ SQL
 
 # read the single file directly
 mkdir -p "$brickdir_exporter/clinicalstudies"
-duckdb -c "$(cat <<'SQL'
+duckdb -c "$(myenvsubst <<'SQL'
 COPY (
 	SELECT
 		*
@@ -132,7 +136,7 @@ COPY (
 		quote = '"',
 		escape = '"'
 	)
-) TO 'brick/ExPORTER/clinicalstudies/ClinicalStudies.parquet' (FORMAT parquet);
+) TO '${brickdir_exporter}/clinicalstudies/ClinicalStudies.parquet' (FORMAT parquet);
 SQL
 )"
 # }}}

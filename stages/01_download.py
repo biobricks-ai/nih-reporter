@@ -33,14 +33,13 @@ def setup_chrome_driver(download_dir):
 
     return driver
 
-# DOWNLOAD PROJECTS ============================================================
-def download_projects():
-    # make the download/projects directory if it doesn't exist
-    download_dir = os.path.join(os.getcwd(), 'download', 'projects')
-    os.makedirs(download_dir, exist_ok=True)
+def download_data(url):
+    # Extract the final part of the URL as the type name
+    download_type = url.split('/')[-1]
 
-    # URL of the website
-    url = "https://reporter.nih.gov/exporter"
+    # make the download directory if it doesn't exist
+    download_dir = os.path.join(os.getcwd(), 'download', download_type)
+    os.makedirs(download_dir, exist_ok=True)
 
     # Set up the Selenium WebDriver with Chrome options
     driver = setup_chrome_driver(download_dir)
@@ -64,58 +63,23 @@ def download_projects():
         cols = row.find_elements(By.TAG_NAME, 'td')
         if cols:
             data.append([col.text for col in cols])
-            # Find the download link in the third column
-            download_links.append(cols[2].find_element(By.TAG_NAME, 'a'))
+            # Find the first download link in any column
+            download_links.append(row.find_elements(By.XPATH, './/td/a')[0])
 
-    for link in tqdm(download_links, desc='Downloading projects'):
-        # link.click()
+    for link in tqdm(download_links, desc=f'Downloading {download_type}'):
         driver.execute_script("arguments[0].click();", link)
         time.sleep(10)
 
     # Close the browser
     driver.quit()
 
-download_projects()
+# URLs for downloads
+urls = [
+    "https://reporter.nih.gov/exporter/projects",
+    "https://reporter.nih.gov/exporter/abstracts",
+    "https://reporter.nih.gov/exporter/clinicalstudies"
+]
 
-# DOWNLOAD ABSTRACTS ============================================================
-def download_abstracts():
-    download_dir = os.path.join(os.getcwd(), 'download', 'abstracts')
-    os.makedirs(download_dir, exist_ok=True)
-
-    # URL of the website
-    url = "https://reporter.nih.gov/exporter/abstracts"
-
-    # Set up the Selenium WebDriver with Chrome options
-    driver = setup_chrome_driver(download_dir)
-
-    time.sleep(5)
-
-    # Open the website
-    driver.get(url)
-
-    # Wait for the JavaScript to load
-    time.sleep(5)  # Adjust this depending on your internet speed and website response time
-
-    # Scrape the table data
-    table = driver.find_element(By.CLASS_NAME, 'b-table')
-    rows = table.find_elements(By.TAG_NAME, 'tr')
-
-    # Process the rows and extract data
-    data = []
-    download_links = []
-    for row in rows:
-        cols = row.find_elements(By.TAG_NAME, 'td')
-        if cols:
-            data.append([col.text for col in cols])
-            # Find the download link in the third column
-            download_links.append(cols[2].find_element(By.TAG_NAME, 'a'))
-
-    for link in tqdm(download_links, desc='Downloading abstracts'):
-        # link.click()
-        driver.execute_script("arguments[0].click();", link)
-        time.sleep(10)
-
-    # Close the browser
-    driver.quit()
-
-download_abstracts()
+# Run the downloads for each URL
+for url in urls:
+    download_data(url)

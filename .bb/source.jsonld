@@ -1,0 +1,43 @@
+{
+  "@context": "../../context/source.context.jsonld",
+  "@type": "dcat:Dataset",
+  "@id": "https://biobricks.ai/bricks/nih-reporter",
+  "dcterms:title": "NIH RePORTER ExPORTER (funded projects, abstracts, clinical studies)",
+  "dcterms:description": "Awarded NIH grant and research-project records - project/application details, funding amounts, organizations, principal investigators, abstracts, and clinical studies. Scraped from the NIH RePORTER ExPORTER bulk-download tables (reporter.nih.gov/exporter for projects, abstracts, and clinicalstudies) and materialized as parquet/CSV.",
+  "dcterms:license": "https://www.usa.gov/government-works",
+  "biobricks:licenseName": "U.S. Government Work (public domain)",
+  "biobricks:licenseClass": "open",
+  "biobricks:merckCommercialUse": "permitted",
+  "biobricks:licenseEvidence": [
+    {
+      "source": "stages/01_download.py",
+      "quote": "urls = [ \"https://reporter.nih.gov/exporter/projects\", \"https://reporter.nih.gov/exporter/abstracts\", \"https://reporter.nih.gov/exporter/clinicalstudies\" ]",
+      "confidence": "high"
+    },
+    {
+      "source": "README.md",
+      "quote": "Collects awarded NIH grant information from https://reporter.nih.gov/exporter.",
+      "confidence": "high"
+    },
+    {
+      "source": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+      "quote": "Information that is created by or for the US government on this site is within the public domain.",
+      "confidence": "low"
+    }
+  ],
+  "biobricks:reviewed": false,
+  "biobricks:reviewNotes": "Determined by BioBricks licensing-provenance annotation agent (Claude Opus 4.8). The download stage and README show the data comes from the NIH RePORTER ExPORTER bulk-export service (reporter.nih.gov/exporter), an official U.S. National Institutes of Health resource. NIH RePORTER/ExPORTER records are U.S. Government Works in the public domain and are published for open bulk download without registration, license fee, or restriction, so licenseClass=open and merckCommercialUse=permitted. The RePORTER FAQ/data-policy pages rendered only as JavaScript to the fetcher, so the public-domain determination is grounded in the U.S.-federal-agency provenance (a US Government Work) rather than a quoted RePORTER license badge; confidence is set accordingly. A reviewer may confirm the RePORTER data-availability statement and note NIH's request that any personally identifying investigator information be used responsibly.",
+  "dcterms:creator": "U.S. National Institutes of Health",
+  "dcterms:publisher": "U.S. National Institutes of Health (NIH RePORTER)",
+  "prov:wasDerivedFrom": [
+    {
+      "@type": "dcat:Dataset",
+      "@id": "https://reporter.nih.gov/exporter",
+      "dcterms:title": "NIH RePORTER ExPORTER data files",
+      "dcterms:license": "https://www.usa.gov/government-works",
+      "dcat:downloadURL": "https://reporter.nih.gov/exporter",
+      "dcat:landingPage": "https://reporter.nih.gov/exporter",
+      "dcterms:publisher": "U.S. National Institutes of Health"
+    }
+  ]
+}
